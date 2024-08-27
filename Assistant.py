@@ -3,7 +3,7 @@ import speech_recognition as sr
 import cohere
 import API
 
-co = cohere.Client('API')
+co = cohere.Client(API.API_key)
 
 
 
