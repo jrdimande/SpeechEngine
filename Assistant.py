@@ -1,8 +1,9 @@
 import  pyttsx3
 import speech_recognition as sr
 import cohere
+import API
 
-co = cohere.Client('HKiIV3W1o1Umg6TFWvHfgC68q5CmuzRM6UcfR5kM')
+co = cohere.Client('API')
 
 
 
