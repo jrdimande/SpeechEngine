@@ -17,7 +17,7 @@ def mic():
         audio = recognize.listen(source)
 
     try:
-        print("Recognizing....")
+        print(" Recognizing....")
         command = recognize.recognize_google(audio, language = 'En')
         print(command)
     except Exception as e:
