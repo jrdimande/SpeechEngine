@@ -10,6 +10,8 @@ co = cohere.Client(API.API_key)
 #Speak
 def speak(audio):
     speak_txt = pyttsx3.init()
+    rate = speak_txt.getProperty('rate')
+    speak_txt.setProperty('rate', 175  )
     speak_txt.say(audio)
     speak_txt.runAndWait()
 
@@ -27,10 +29,11 @@ def mic():
         print(f"Command:{command}")
 
 
+
         response = co.generate(
             model='command-xlarge-nightly',
             prompt=command,
-            max_tokens=100
+            max_tokens=50
         )
         text = response.generations[0].text
         print(f"Response:{text}")
