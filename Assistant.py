@@ -25,12 +25,18 @@ def mic():
         command = recognize.recognize_google(audio, language = 'En')
         print(f"Command:{command}")
 
+
         response = co.generate(
             model='command-xlarge-nightly',
             prompt=command,
             max_tokens=100
         )
-        speak(response)
+        text = response.generations[0].text
+        print(f"Response:{text}")
+
+
+
+        speak(text)
     except Exception as e:
         print(e)
 
