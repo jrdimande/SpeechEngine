@@ -33,7 +33,7 @@ def mic():
         response = co.generate(
             model='command-xlarge-nightly',
             prompt=command,
-            max_tokens=50
+            max_tokens=100
         )
         text = response.generations[0].text
         print(f"Response:{text}")
