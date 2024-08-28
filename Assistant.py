@@ -5,6 +5,8 @@ import API
 import datetime
 import os
 import platform
+import webbrowser
+
 
 co = cohere.Client(API.API_key)
 
@@ -22,6 +24,7 @@ def get_time():
     concurrent_time = datetime.datetime.now().strftime("%H : %M")
     speak(f"its now {concurrent_time}")
 
+
 def adjust_brightness(level):
     try:
         if platform.system() == "Windows":
@@ -29,6 +32,41 @@ def adjust_brightness(level):
             speak(f"Brightness set to {level}%")
     except Exception as e:
         speak(f"Failed to adjust brightness. Error: {str(e)}")
+
+def open_application(app_name):
+    try:
+        if platform.system() == "Windows":
+            os.system(f'start {app_name}')
+
+        speak(f"Opening {app_name}")
+    except Exception as e:
+        speak(f"I couldn't open {app_name}. Error: {str(e)}")
+
+import webbrowser
+
+def open_youtube():
+        url = "https://www.youtube.com"
+        speak("Opening youtube")
+        webbrowser.open(url)
+
+def open_google():
+        url = "https://google.com"
+        speak("opening google")
+        webbrowser.open(url)
+
+def open_github():
+    url = "https://github.com/login"
+    speak("opening github")
+    webbrowser.open(url)
+
+def open_stack_overflow():
+    url = "https://stackoverflow.com"
+    speak("opening stackoverflow")
+    webbrowser.open(url)
+
+
+
+
 
 
 
@@ -74,6 +112,7 @@ def mic():
         if command == "what time is it":
             get_time()
 
+
         elif 'set brightness to' in command.lower():
             try:
                 level = int(command.lower().replace('set brightness to', '').strip().replace('%', ''))
@@ -81,6 +120,23 @@ def mic():
             except ValueError:
                 speak("Please provide a valid brightness level.")
             return
+
+        # Open web aplications
+        elif 'open' in command.lower():
+            app_name = command.lower().replace('open', '').strip()
+            open_application(app_name)
+
+        elif 'youtube' in command.lower():
+            open_youtube()
+
+        elif 'google' in command.lower():
+            open_google()
+
+        elif 'github' in command.lower():
+            open_github()
+
+        elif 'stackoverflow' in command.lower():
+            open_stack_overflow()
 
 
 
@@ -101,7 +157,7 @@ def mic():
                 response = co.generate(
                     model='command-xlarge-nightly',
                     prompt=command,
-                    max_tokens=100
+                    max_tokens=150
                 )
                 text = response.generations[0].text
                 print(f"Response:{text}")
