@@ -10,7 +10,7 @@ import webbrowser
 
 co = cohere.Client(API.API_key)
 
-#Speak
+# Function to Speak
 def speak(audio):
     speak_txt = pyttsx3.init()
     rate = speak_txt.getProperty('rate')
@@ -20,6 +20,7 @@ def speak(audio):
     speak_txt.say(audio)
     speak_txt.runAndWait()
 
+# Function to get Time
 def get_time():
     concurrent_time = datetime.datetime.now().strftime("%H : %M")
     speak(f"its now {concurrent_time}")
@@ -33,6 +34,7 @@ def adjust_brightness(level):
     except Exception as e:
         speak(f"Failed to adjust brightness. Error: {str(e)}")
 
+# Function to open apps
 def open_application(app_name):
     try:
         if platform.system() == "Windows":
@@ -42,8 +44,11 @@ def open_application(app_name):
     except Exception as e:
         speak(f"I couldn't open {app_name}. Error: {str(e)}")
 
-import webbrowser
 
+
+
+
+# Functions to open web Aplications
 def open_youtube():
         url = "https://www.youtube.com"
         speak("Opening youtube")
@@ -63,6 +68,7 @@ def open_stack_overflow():
     url = "https://stackoverflow.com"
     speak("opening stackoverflow")
     webbrowser.open(url)
+
 
 
 
@@ -137,6 +143,9 @@ def mic():
 
         elif 'stackoverflow' in command.lower():
             open_stack_overflow()
+
+        elif 'stop running' in command.lower():
+            flag = False
 
 
 
