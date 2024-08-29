@@ -37,10 +37,13 @@ def adjust_brightness(level):
 
 
 def restart_computer():
-    subprocess.call(["shutdown", "-r", "-t", "0"])
     speak("I will restart your device in 3 seconds")
-    for c in range(1,4):
+    for c in range(1, 4):
         speak(c)
+        time.sleep(1)
+
+    subprocess.call(["shutdown", "-r", "-t", "0"])
+
 
 
 
