@@ -1,12 +1,13 @@
-import  pyttsx3
 import speech_recognition as sr
+import  pyttsx3
 import cohere
 import API
 import datetime
 import os
 import platform
 import webbrowser
-
+import  subprocess
+import time
 
 co = cohere.Client(API.API_key)
 
@@ -15,8 +16,8 @@ def speak(audio):
     speak_txt = pyttsx3.init()
     rate = speak_txt.getProperty('rate')
     voices = speak_txt.getProperty('voices')
-    speak_txt.setProperty('voice', voices[1].id)
-    speak_txt.setProperty('rate', 175)
+    speak_txt.setProperty('voice', voices[0].id)
+    speak_txt.setProperty('rate', 173)
     speak_txt.say(audio)
     speak_txt.runAndWait()
 
@@ -25,7 +26,7 @@ def get_time():
     concurrent_time = datetime.datetime.now().strftime("%H : %M")
     speak(f"its now {concurrent_time}")
 
-
+# OS
 def adjust_brightness(level):
     try:
         if platform.system() == "Windows":
@@ -33,6 +34,16 @@ def adjust_brightness(level):
             speak(f"Brightness set to {level}%")
     except Exception as e:
         speak(f"Failed to adjust brightness. Error: {str(e)}")
+
+
+def restart_computer():
+    subprocess.call(["shutdown", "-r", "-t", "0"])
+    speak("I will restart your device in 3 seconds")
+    for c in range(1,4):
+        speak(c)
+
+
+
 
 # Function to open apps
 def open_application(app_name):
@@ -43,8 +54,6 @@ def open_application(app_name):
         speak(f"Opening {app_name}")
     except Exception as e:
         speak(f"I couldn't open {app_name}. Error: {str(e)}")
-
-
 
 
 
@@ -69,36 +78,15 @@ def open_stack_overflow():
     speak("opening stackoverflow")
     webbrowser.open(url)
 
+def open_chatgpt():
+    url = "https://chatgpt.com"
+    speak("opening chat gpt")
+    webbrowser.open(url)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def open_instagram():
+    url = "https://instagram.com/login"
+    speak("Open instagram login page")
+    webbrowser.open(url)
 
 
 # Listen and recognize commands
@@ -114,11 +102,11 @@ def mic():
         command = recognize.recognize_google(audio, language = "En")
         print(f"Command:{command}")
 
-        # Instructions
+        # Get time
         if command == "what time is it":
             get_time()
 
-
+        # Set brightness
         elif 'set brightness to' in command.lower():
             try:
                 level = int(command.lower().replace('set brightness to', '').strip().replace('%', ''))
@@ -126,6 +114,12 @@ def mic():
             except ValueError:
                 speak("Please provide a valid brightness level.")
             return
+
+        # Restart computer
+        elif 'restart device' in command.lower():
+            restart_computer()
+
+
 
         # Open web aplications
         elif 'open' in command.lower():
@@ -144,20 +138,15 @@ def mic():
         elif 'stackoverflow' in command.lower():
             open_stack_overflow()
 
+        elif 'instagram' in command.lower():
+            open_instagram()
+
+        elif 'ai' in command.lower():
+            open_chatgpt()
+
+        # Stop execution
         elif 'stop running' in command.lower():
             flag = False
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         else:
@@ -166,14 +155,12 @@ def mic():
                 response = co.generate(
                     model='command-xlarge-nightly',
                     prompt=command,
-                    max_tokens=150
+                    max_tokens=120
                 )
                 text = response.generations[0].text
                 print(f"Response:{text}")
                 speak(text)
                 break
-
-
 
 
     except Exception as e:
