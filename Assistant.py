@@ -9,14 +9,13 @@ import webbrowser
 import  subprocess
 import time
 
+
 co = cohere.Client(API.API_key)
 
 # Function to Speak
 def speak(audio):
     speak_txt = pyttsx3.init()
     rate = speak_txt.getProperty('rate')
-    voices = speak_txt.getProperty('voices')
-    speak_txt.setProperty('voice', voices[0].id)
     speak_txt.setProperty('rate', 173)
     speak_txt.say(audio)
     speak_txt.runAndWait()
@@ -167,7 +166,7 @@ def mic():
 
 
     except Exception as e:
-        print(e)
+        speak(e)
 
 
 flag = True
